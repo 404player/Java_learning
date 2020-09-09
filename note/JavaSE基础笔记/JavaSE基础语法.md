@@ -1,0 +1,312 @@
+## JavaSE基础语法
+
+### Java注释
+
+- 单行注释  
+
+```java
+public class HelloWorld {
+    public static void main(String[] args) {
+        //单行注释
+        //输出一个Hello,World!
+        System.out.println("Hello,World!");
+    }
+}
+```
+
+- 多行注释  
+
+```java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello,World!");        
+        /* 
+        我是多行注释
+        我能实现注释一段文本
+        Hello World
+        */
+    }
+}
+```
+
+- JavaDoc(文档注释)  
+
+```java
+/**
+ * @Description HelloWorld
+ * @Author 狂神说Java
+ */
+```
+
+### 标识符  
+
+> Java所有的组成部分都需要名字。类名、变量名以及方法名都被称为标识符。
+
+- 所有标识符应该以字母，美元符（$)，或者下划线开始
+- 不能使用关键字作为变量名或方法名
+- 标识符是大小写敏感的  
+
+### 数据类型
+
+1. 强类型语言（Java是一种强类型语言）
+
+   ​	要求变量必须先定义后才能使用
+
+2. Java数据类型分为两大类  
+
+- 基本类型
+  - 整数类型
+  - 浮点类型
+  - boolean类型
+- 引用类型
+  - 类
+  - 接口
+  - 数组
+
+### 数据类型拓展
+
+1. 进制  
+
+   - 八进制 010
+   - 二进制0b10
+   - 十六进制0x10
+
+2. 浮点数是一个接近但不等于的值，最好不用浮点数进行比较
+
+   ```jav
+           float f = 0.1f;
+           double d = 1.0/10;
+   
+           System.out.println(f==d); //false
+           System.out.println(f);
+           System.out.println(d);
+   
+           float d1 = 23131312312312313f;
+           float d2 = d1+1;
+   
+           System.out.println(d1==d2);//true
+           
+           //要表示银行业务等功能时，需要使用Java的数学工具类BigDecimal
+   ```
+
+3. 字符可以强制转化成数字
+
+   ```java
+           char c1 = 'a';
+           char c2 = '中';
+   
+           System.out.println(c1);
+           System.out.println((int)c1);//97
+           System.out.println(c2);
+           System.out.println((int)c2);//20013
+   
+           //所有的字符本质还是数字
+           //编码 Unicode 2字节    
+   ```
+
+### 类型转换
+
+1. 类型优先度
+
+   > byte,short,char -> int -> long -> float -> double
+
+2. 优先度高转低的时候需要强制转换，低转高时自动转换
+```java
+public class Demo05 {
+    public static void main(String[] args) {
+        int i =128;
+        byte b = (byte)i;//内存溢出
+
+        //强制转换  （类型）变量名  高---低
+        //自动转换  低--高
+        System.out.println(i);
+        System.out.println(b);
+
+        double c = i;
+        System.out.println(c);
+
+
+        /*
+        注意点：
+        1.不能对布尔值进行转换
+        2.不能把对象类型转换为不相干的类型
+        3.在把高容量转换到低容量的时候，强制转换
+        4.转换的时候可能存在内存溢出，或者精度问题
+         */
+
+
+        System.out.println("=======================");
+        System.out.println((int)23.7); //23
+        System.out.println((int)-45.89); //-45
+
+        System.out.println("=======================");
+        char e = 'a';
+        int d = e + 1; //98
+        System.out.println(d);
+    }
+}
+
+
+```
+
+
+
+
+3. 一定要注意数据的溢出问题
+
+    ```java
+   public class Demo06 {
+       public static void main(String[] args) {
+           //操作比较大的数的时候，注意溢出问题
+           //JDK7新特性，数字之间可以用下划线分割
+           int money = 10_0000_0000;
+           System.out.println(money);
+           int year = 20;
+           long total = money*year;
+           System.out.println(total); //long没有用，还是会出现溢出问题，计算的两个数都是int,所以计算结果都是int,后才转换成long
+   
+           long total2 = money*((long)year);  
+           System.out.println(total2);
+       }
+   }
+   ```
+
+   
+
+### 变量与常量
+
+Java变量是程序中最基本的存储单元，其要素包括变量名，变量类型和作用域。
+
+其他的其他语言都学得比较深刻，重点说说作用域。
+
+- 类变量
+
+- 实例变量
+
+- 局部变量
+
+  ```java
+  public class Demo08 {
+      //属性：变量
+  
+      //实例变量： 从属于对象,如果不进行初始化，这个类型的默认值 0 0.0 u0000 false
+      //除了基本类型其余都是null
+      String name;
+      int age;
+  
+      //类变量 static
+      static double salary = 2500;
+  
+      //main方法
+      public static void main(String[] args) {
+  
+          //局部变量：必须声明和初始话值
+          int i = 10;
+  
+          Demo08 demo08 = new Demo08();
+          System.out.println(demo08.age);
+          System.out.println(demo08.name);
+          System.out.println(salary);
+  
+          //类变量 static
+      }
+  
+      //其他方法
+      public void add() {
+  
+      }
+  }
+  ```
+
+  
+
+所谓常量就是一种特殊的变量，它的值被设定以后，在程序运行过程中不允许改变。
+
+- 常量前面加`final`
+
+- 一般常量名用大写字母表示
+
+  ```java
+  public class Demo09 {
+      
+      //修饰符，不存在先后顺序
+      static final double PI = 3.14;
+  
+      public static void main(String[] args) {
+          System.out.println(PI);
+      }
+  }
+  ```
+
+变量的命名规范
+
+- 所有变量、方法、类名：见名知意
+- 类成员变量： 首字母小写和驼峰原则：`monthSalary`     除了第一个单词以外，后面的单词首字母大写
+- 局部变量：首字母小写和驼峰原则
+- 常量：大写字母和下划线  `MAX_VALUE`
+- 类名：首字母大写和驼峰原则：`GoodMan`
+- 方法名：首字母小写和驼峰原则
+
+
+
+### 包机制
+
+为了更好地组织类，`Java`提供了包机制，用于区别类名的命名空间。
+
+包机制的语法格式为:
+
+```java
+package pkg1.pkg2.pkg3
+```
+
+一般利用公司域名倒置作为包名
+
+为了能够使用另一个包的成员，我们需要在Java程序中导入该包，语法为：
+
+```java
+import pkg1.pkg2.pkg3
+```
+
+两个不同的包要是成员名一样，导入会报错，所以尽量不要使用相同的名字。  
+
+```java
+//导入这个包下所有的类
+
+import com.kuang.base.*;
+```
+
+### JavaDoc
+
+JavaDoc命令用来生成自己的API文档
+
+### 参数信息
+
+
+
+- @author 作者名
+- @version 版本号
+- @since 指明需要最早使用的jdk版本
+- @param 参数名
+- @return 返回值情况
+- @throws 异常抛出情况
+
+用命令行生成文档：
+
+```shell
+javadoc -encoding UTF-8 -charset UTF-8 Doc.java
+```
+
+[使用IDEA生成javadoc文档](https://www.jianshu.com/p/0ddb0864e499)
+
+
+
+
+
+## Java流程控制
+
+
+
+### 用户交互Scanner
+
+
+
