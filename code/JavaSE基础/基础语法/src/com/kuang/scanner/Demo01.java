@@ -17,7 +17,7 @@ public class Demo01 {
         if (scanner.hasNext()){
             String str = scanner.next();
             System.out.println("输入的内容为： "+str);
-            
+
         }
 
 
