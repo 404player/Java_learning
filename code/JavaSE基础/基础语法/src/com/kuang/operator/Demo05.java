@@ -15,6 +15,5 @@ public class Demo05 {
         boolean d = (c<4)&&(c++<4);
         System.out.println(d);
         System.out.println(c);//c++没有执行
-        String
     }
 }

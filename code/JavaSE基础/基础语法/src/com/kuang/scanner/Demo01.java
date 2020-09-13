@@ -20,6 +20,10 @@ public class Demo01 {
 
         }
 
+        //凡是属于IO流的类如果不关闭会一直占用资源，要养成好习惯用完就关掉
+        scanner.close();
+
+
 
     }
 }
