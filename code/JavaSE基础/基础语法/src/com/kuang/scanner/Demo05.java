@@ -21,7 +21,7 @@ public class Demo05 {
         System.out.println(m+"个数平均值为"+(sum/m));
 
 
-        scanner.close()
+        scanner.close();
 
     }
 }
