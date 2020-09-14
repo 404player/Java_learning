@@ -496,6 +496,155 @@ for(声明语句:表达式){
 }
 ```
 
+```java
+package com.kuang.struct;
+
+public class ForDemo05 {
+    public static void main(String[] args) {
+        int[] numbers = {10, 20, 30, 40, 50}; //定义一个数组
+
+        for (int x : numbers) {
+            System.out.println(x);
+        }
+
+    }
+}
+```
+
+#### break && continue
+
+`break`在任何循环语句的主体部分，用于强行退出循环，不执行循环中剩余的语句。  
+
+ ```java
+package com.kuang.struct;
+
+public class BreakDemo01 {
+    public static void main(String[] args) {
+        int i =0;
+        while(i<100){
+            i++;
+            System.out.println(i);
+            if(i==30){
+                break;
+            }
+        }
+    }
+}
+ ```
+
+`continue`语句用在循环语句中，用于终止某次循环，即跳过循环体中尚未执行的语句，接着进行是否执行下一次循环的判定。  
+
+```java
+package com.kuang.struct;
+
+public class ContinueDemo01 {
+    public static void main(String[] args) {
+        int i = 0;
+        while(i<100){
+            i++;
+            if(i%10==0){
+                System.out.println();
+                continue;
+            }
+            System.out.print(i+"\t");
+        }
+    }
+}
+```
+
+### 
+
+## 方法
+
+Java方法是语句的集合，他们在一起执行一个功能。  
+
+命名规则：首字母小写，后面驼峰
+
+- 方法是解决一类问题的步骤的有序组合
+- 方法包含于类或对象中国
+- 方法在程序中被创建，在其他地方被引用
+
+> 设计方法的原则：一个方法只完成一个功能，有利于我们后期拓展
+
+  
+
+### 方法的定义
+
+```java
+修饰符 返回值类型  方法名(参数类型 参数名){
+    ...
+    方法体
+    ...
+    return 返回值;
+}
+```
+
+```java
+//实例代码
+
+package com.kuang.method;
+
+public class Demo02 {
+    public static void main(String[] args) {
+        int max = max(10,10);
+        System.out.println(max);
+    }
+
+    //比大小
+    public static int max(int num1,int num2){
+
+        int result = 0;
+
+        if(num1 == num2){
+            System.out.println("num1==num2");
+            return num1; //终止方法
+        }
+
+
+
+        if(num1 > num2){
+            result = num1;
+        }else{
+            result = num2;
+        }
+        return result;
+    }
+}
+
+```
+
+### 方法的重载
+
+重载就是在一个类中，有相同的函数名称，但形参不同的函数。
+
+- 方法名称必须相同
+- 参数列表必须不同
+
+
+
+### 可变参数
+
+- 在方法声明中，在指定参数类型后加一个省略号
+- 一个方法只能指定一个可变参数，且必须是方法的最后一个参数，任何普通的参数必须在它之前声明
+
+```java
+//示例代码
+
+package com.kuang.method;
+
+public class Demo04 {
+    public static void main(String[] args) {
+        Demo04 demo04 = new Demo04();
+        demo04.test(1,2);
+    }
+
+    public void test(int... i){//本质是个数组
+        System.out.println(i[0]);
+        System.out.println(i[1]);
+    }
+}
+```
+
 
 
 
