@@ -645,7 +645,142 @@ public class Demo04 {
 }
 ```
 
+### 递归  
 
+递归就是自己调用自己。  
 
+递归结构包括两个部分：
 
+- 递归头：什么时候不调用自身方法，如果没有头，将陷入死循环。  
+- 递归体：什么时候需要调用自身方法  
+
+```java
+//示例代码
+package com.kuang.method;
+//容易造成栈溢出，能不用尽量不用
+public class Demo06 {
+    public static void main(String[] args) {
+        System.out.println(f(6));
+    }
+
+    public  static  int f(int n){
+        if(n==1 || n==0){
+            return 1;
+        }else{
+            return n*f(n-1);
+        }
+    }
+}
+```
+
+## 作业（总结一下前面的内容）
+
+### 需求
+
+1. 传入两个参数
+2. 传入一种计算方法
+3. 用`switch`选择计算方法实现计算器功能
+
+```java
+package com.kuang.method;
+
+import java.util.Scanner;
+
+public class HomeworkCalculator {
+    public static void main(String[] args) {
+        while(true){
+            Scanner scanner = new Scanner(System.in);
+
+            System.out.println("Please enter an number: ");
+            double sa = scanner.nextDouble();
+            System.out.println("Please enter another number: ");
+            double sb = scanner.nextDouble();
+
+            System.out.println("Please enter the method ");
+            String sc = scanner. next();
+
+            switch (sc){
+                case "+":
+                    System.out.println(add(sa,sb));
+                    break;
+                case "-":
+                    System.out.println(sub(sa,sb));
+                    break;
+                case "*":
+                    System.out.println(ride(sa,sb));
+                    break;
+                case "/":
+                    System.out.println(div(sa,sb));
+                    break;
+            }
+        }
+
+    }
+
+    public static double add(double a,double b){
+        return a+b;
+    }
+
+    public static double sub(double a,double b){
+        return a-b;
+    }
+
+    public static double ride(double a,double b){
+        return a*b;
+    }
+    public static double div(double a,double b){
+        return a/b;
+    }
+}
+```
+
+## 数组
+
+数组是相同类型数据的有序集合。
+
+数组描述的是相同类型的若干数组，按照一定的先后次序排列组合而成。  
+
+### 声明与创建
+
+1. 首先必须声明数组变量，才能在程序中使用数组。  
+
+```java
+dataType[] arrayRefVar; // 首选的方法
+dataType arrayRefVar[]; //效果相同，但不是首选方法
+```
+
+2. Java语言中使用`new`来创建数组  
+
+```java
+dataType[] arrayRefVar = new dataType[arraySize];
+```
+
+### Java内存分析
+
+- 堆
+  - 存放`new`的对象和数组
+  - 可以被所有的线程共享，不会存放别的对象引用
+- 栈
+  - 存放基本变量类型（会包含这个基本类型的具体数值）
+  - 引用对象的变量（会存放这个引用在堆里面的具体地址）
+
+#### 数组的三种初始化
+
+- 静态初始化
+
+```java
+int[] a = {1,2,3};
+Man[] mans = {new Man(1,1),new Man(2,2)};
+```
+
+- 动态初始化
+
+```java
+int[] a = new int[2];
+a[0] = 1;
+a[1] = 2;
+```
+
+- 数组的默认初始化
+  - 数组是引用类型，它的元素相当于类的实例变量，因此数字一经分配空间，其中的每个元素也被按照实例变量同样的方式被隐式初始化。
 
