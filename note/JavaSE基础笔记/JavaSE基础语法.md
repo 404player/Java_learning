@@ -784,3 +784,298 @@ a[1] = 2;
 - 数组的默认初始化
   - 数组是引用类型，它的元素相当于类的实例变量，因此数字一经分配空间，其中的每个元素也被按照实例变量同样的方式被隐式初始化。
 
+### 数组使用
+
+#### For-Each循环
+
+```java
+//示例代码
+for(int array:arrays){
+           System.out.println(array);
+}
+```
+
+### 数组作为参数传入 && 数组作为结果传出
+
+```java
+//示例代码
+ //反转数组
+    public static  int[] reverse(int[] arrays){
+        int[] result = new int[arrays.length];
+        for (int i = 0,j = arrays.length-1; i < arrays.length; i++,j--) {
+            result[j] = arrays[i];
+        }
+```
+
+### 多维数组
+
+多维数组可以看成是数组的数组。
+
+```java
+int a[][] = new int[2][5];
+```
+
+```java
+//遍历多维数组
+for(int i = 0;i<array.length;i++){
+            for(int j = 0;j<array[i].length;j++){
+                System.out.print(array[i][j]+" ");
+            }
+            System.out.print("\n");
+        }
+```
+
+### Arrays类
+
+```java
+//示例代码
+		System.out.println(Arrays.toString(a));
+        Arrays.sort(a);//升序排序
+        System.out.println(Arrays.toString(a));
+
+        Arrays.fill(a,2,4,0);
+        System.out.println(Arrays.toString(a));
+```
+
+### 冒泡排序
+
+1.比较数组中，两个相邻的元素，如果第一个比第二个数大，就交换他们的位置。
+
+2.每一次比较，都会产生出一个最大，或者最小的数字
+
+3.下一轮则，可以少一次排序。  
+
+ ```java
+package com.kuang.array;
+
+import java.util.Arrays;
+
+public class ArrayDemo07 {
+    public static void main(String[] args) {
+        int[] a = {1,4,6,3,7,4,8};
+        int[] sort = sort(a);
+        System.out.println(Arrays.toString(a));
+    }
+
+    public static int[] sort(int[] array){
+        //临时变量
+        int temp =0;
+
+        //外层循环，判断我们这个要走几次
+        for(int i=0; i<array.length-1; i++){
+
+            boolean flag = false;//通过flag标志位减少没有意义的比较
+
+
+            //内层循环，比较判断两个数，如果第一个数，比第二个大，则交换位置
+            for(int j=0; j<array.length-1-i; j++){
+                if(array[j+1] < array[j]){
+                    temp = array[j];
+                    array[j] = array[j+1];
+                    array[j+1] = temp;
+                    flag = true;
+                }
+            }
+            if(flag==false){
+                break;
+            }
+
+        }
+        return array;
+    }
+}
+ ```
+
+### 稀疏数组
+
+当一个数组中大部分元素为0，或者为同一值的数组时，可以使用稀疏数组来保存该数组。  
+
+稀疏数组的处理方式是:
+
+- 记录数组一共有几行几列，有多少个不同值
+- 把具有不同值的元素和行列及值记录在一个小规模的数组中，从而缩小程序的规模
+
+```java
+//示例代码
+package com.kuang.array;
+
+public class ArrayDemo08 {
+    public static void main(String[] args) {
+        //1、创建一个二位数组11*11  0:没有棋子  1.黑棋 2.白棋
+        int[][] array1 = new int[11][11];
+        array1[1][2] = 1;
+        array1[2][3] = 2;
+        //输出原始的数组
+        System.out.println("输出原始的数组： ");
+
+        for(int[] ints : array1){
+            for(int anInt : ints){
+                System.out.print(anInt+"\t");
+            }
+            System.out.print("\n");
+        }
+
+        //转换为稀疏数组保存
+        //获取有效值的个数
+
+        int sum = 0;
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                if(array1[i][j]!=0){
+                    sum++;
+                }
+            }
+
+        }
+        System.out.println("有效值的个数："+sum);
+
+        //2.创建一个稀疏数组
+        int[][] array2 = new int[sum+1][3];
+        array2[0][0] = 11;
+        array2[0][1] = 11;
+        array2[0][2] = sum;
+
+        //遍历二维数组，将非零的值存放到稀疏数组中
+        int count = 0;
+        for(int i = 0; i < array1.length; i++){
+            for(int j = 0; j < array1[i].length; j++){
+                if(array1[i][j]!=0){
+                    count++;
+                    array2[count][0] = i;
+                    array2[count][1] = j;
+                    array2[count][2] = array1[i][j];
+                }
+            }
+        }
+        //输出稀疏数组
+        System.out.println("稀疏数组： ");
+        for(int i = 0; i < array2.length ; i++){
+            System.out.println(array2[i][0]+"\t"
+                    +array2[i][1]+"\t"
+                    +array2[i][2]+"\t");
+        }
+
+        System.out.println("======================");
+        System.out.println("还原稀疏数组");
+        //1.读取稀疏数组
+
+        int[][] array3 = new int[array2[0][0]][array2[0][1]];
+
+        //给其中的元素还原值
+
+        for (int i = 1; i < array2.length; i++){
+            array3[array2[i][0]][array2[i][1]] = array2[i][2];
+        }
+
+        //打印
+        for(int[] ints : array3){
+            for(int anInt : ints){
+                System.out.print(anInt+"\t");
+            }
+            System.out.print("\n");
+        }
+
+    }
+}
+
+```
+
+## 面向对象编程
+
+- 面向对象思想
+  - 物以类聚，分类的思维方式，思考问题首先会想解决问题需要哪些分类，然后对这些分类进行单独思考。最后，才对某个分类下的细节进行面向过程的思索。
+  - 面向对象适合处理复杂的问题，适合处理需要多人协作的问题
+
+- 对于描述复杂的事物，为了从宏观上把握、从整体上合理分析，我们需要使用面向对象的思路来分析整个系统。但是，具体到微观操作，仍然需要面向过程的思路去处理。  
+
+### 什么是面向对象
+
+- 面向对象的本质：以类的方式组织代码，以对象来组织（封装）数据
+- 抽象
+- 三大特性：
+  - 封装
+  - 继承
+  - 多态
+
+### 方法回顾
+
+```java
+package com.oop.demo01;
+
+public class Demo02 {
+    public static void main(String[] args) {
+
+        //静态方法 static
+//        Student.say();
+
+        //非静态方法
+        //实例化这个类 new
+        //对象类型   对象名 = 对象值
+        Student student = new Student();
+        student.say();
+    }
+
+
+    // 有static的方法和类一起加载
+    public  void   a(){
+        b();
+    }
+
+    //类实例化后 才存在
+    public void b(){
+
+    }
+}
+```
+
+两个普通方法，都为静态或者都不为静态的时候才能互相调用，因为有`static`的方法跟类一起加载，而非静态的方法只有**类实例化**后才存在，存在的方法无法调用不存在的方法。
+
+```java
+package com.oop.demo01;
+
+//值传递
+public class Demo04 {
+    public static void main(String[] args) {
+        int a =1;
+        System.out.println(a);
+        change(a);
+        System.out.println(a);
+    }
+
+    //返回值为空
+    public static void change(int a){
+        a = 10;
+    }
+}
+```
+
+```java
+package com.oop.demo01;
+
+//引用传递： 对象，本质还是值传递
+public class Demo05 {
+    public static void main(String[] args) {
+        Person person = new Person();
+
+        System.out.println(person.name);//null
+
+        change(person);
+        System.out.println(person.name);
+    }
+
+    public static void change(Person person){
+        //person是一个对象，这是一个具体的人，可以改变属性
+        person.name = "404player";
+    }
+}
+
+//定义了一个Person类，有一个属性：name
+class  Person{
+    String name;
+}
+```
+
+值传递和引用传递要分清楚，**实例1**中只是将`a`的值传递给了方法，所以调用方法后`a`的值并不会发生变化。  
+
+而**实例2**传递的是一个实例对象，所以调用方法后属性的值可以被改变。  
+
