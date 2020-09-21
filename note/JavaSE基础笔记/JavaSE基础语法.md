@@ -1077,5 +1077,339 @@ class  Person{
 
 值传递和引用传递要分清楚，**实例1**中只是将`a`的值传递给了方法，所以调用方法后`a`的值并不会发生变化。  
 
-而**实例2**传递的是一个实例对象，所以调用方法后属性的值可以被改变。  
+而**实例2**传递的是一个实例对象，所以调用方法后属性的值可以被改变。    
+
+### 类与对象的创建
+
+类是一种抽象的数据类型，它是对某一类事物整体描述/定义，但是并不能代表某一个具体的事物。  
+
+- 创建类
+
+```java
+package com.oop.demo02;
+//学生类
+public class Student {
+    //属性：字段
+    String name;//null
+    int age;//0
+
+
+    //方法
+    public void study(){
+        System.out.println(this.name+"在学习");
+    }
+}
+```
+
+- 实例化对象
+
+```java
+    public static void main(String[] args) {
+
+        //类：抽象的，需要实例化为对象
+        //类实例化之后会返回一个具体的对象
+        //student对象就是一个Student类的具体实例
+
+        Student xiaoming = new Student();
+        Student xiaohong = new Student();
+
+        xiaoming.name = "xiaoming";
+        xiaoming.age = 3;
+        System.out.println(xiaoming.name);
+
+        System.out.println(xiaohong.name);
+        System.out.println(xiaohong.age);
+    }
+}
+```
+
+### 构造器的使用
+
+类中的构造器也称为构造方法，是在进行创建对象的时候必须调用的。并且构造器有一下两个特点：
+
+- 必须和类的名字相同
+- 必须没有返回值类型
+
+构造器的作用：
+
+- new 本质在调用构造器
+- 初始化对象的值
+- 定义有参构造后，想要使用无参构造，显示的定义一个无参构造
+
+```java
+// 生成构造器
+package com.oop.demo02;
+
+public class Person {
+
+    //一个类即使什么都不写，他也会存在一个方法
+    //显式的定义构造器
+    String name;
+
+    //实例化初始值
+    // 1.使用new关键字，必须要有构造器
+    // 2.用来初始化值
+//    public Person(){
+//        this.name = "404player";
+//    }
+
+
+    public  Person(){
+
+    }
+
+    //有参构造:一旦定义了有参构造，无参就必须显示定义
+    public Person(String name){
+        this.name = name;
+    }
+
+
+    //alt+insert 生成构造器
+}
+```
+
+### 封装
+
+- 该露的露，改藏的藏  
+  - 程序追求"高内聚，低耦合"。高内聚就是类的内部数据操作细节自己完成，不允许外部干涉；低耦合，仅暴露少量的方法给外部使用
+- 封装
+  - 通常，应禁止直接访问一个对象中数据的实际表示，而应通过操作接口来访问。这称为信息隐藏。
+- 一句话，属性私有，get/set
+
+  
+
+```java
+//封装类
+package com.oop.demo04;
+
+public class Student {
+
+    private String name;//名字
+    private int id;//学号
+    private char sex;//性别
+    private int age;//年龄
+
+    //提供一些可以操作这些属性的方法
+    //提供一些public 的get、set方法
+
+    //get 获得这个数据
+    public String getName(){
+        return this.name;
+    }
+
+    //set 给这个数据设置值
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public char getSex() {
+        return sex;
+    }
+
+    public void setSex(char sex) {
+        this.sex = sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if(age>120 || age<0) {
+            this.age = 3;
+        }else{
+            this.age = age;
+        }
+    }
+
+
+    //学习（）
+    //睡觉（）
+}
+```
+
+```java
+#//get set
+package com.oop.demo04;
+
+/*
+1.提高程序的安全性，保护数据
+2.隐藏代码的实现细节
+3.统一接口
+4.系统可维护性增加了
+ */
+
+public class Application {
+
+    public static void main(String[] args) {
+        Student s1 = new Student();
+        s1.setName("404player");
+        String name = s1.getName();
+
+        System.out.println(name);
+
+        s1.setAge(999);
+        System.out.println(s1.getAge());
+
+    }
+}
+
+```
+
+### 继承
+
+- 继承的本质是对某一批类的抽象。
+- 继承是类与类之间的一种关系，除此之外，类与类之间的关系还有依赖、组合、聚合
+- 继承关系的两个类，一个为子类（派生类），一个为父类（基类）。子类继承父类，使用关键字`extends`来表示。
+- 子类和父类之间，从意义上将应该具有`is a `的关系
+
+- 在`Java`中所有的类，都默认直接或间接继承`Object`类
+
+- `Java`中只有单继承，没有多继承
+
+#### 注意的点：
+
+- `super`调用父类的构造方法，必须在构造方法的第一个
+
+- 子类有一句隐藏代码`super()`，默认调用父类的无参构造
+- 要是父类没有无参构造，子类也无法写无参构造
+- 调用父类的构造器，必须要在子类构造器的第一行
+- 子类里要不调用子类`this()`，要不调用父类`super()`  
+
+#### 示例代码
+
+```java
+//Person
+package com.oop.demo05;
+
+//Person  人
+public class Person {
+
+    //private
+    //default 默认的
+    //protected  受保护的
+    //public
+    //私有的东西无法继承
+
+
+
+
+    protected  String name = "404player";
+
+    public  void print(){
+        System.out.println("Person");
+    }
+
+    }
+
+```
+
+```java
+//Student
+package com.oop.demo05;
+
+
+//学生   is   人
+public class Student extends Person {
+    //Ctrl + H  查看类的树结构
+    //要么调用父类super()，要么调用子类this()
+    //隐藏代码，调用父类的无参构造
+    super(); //调用父类的构造器，必须要在子类构造器的第一行
+    public Student() {
+        System.out.println("Student无参构造执行了");
+    }
+
+    private String name = "404player";
+
+    public void print(){
+        System.out.println("Student");
+    }
+
+    public void test(String name){
+        System.out.println(name);
+        System.out.println(this.name);//调用本类方法
+        System.out.println(super.name);//调用父类方法
+    }
+
+    public void test1(){
+        print();
+        this.print();
+        super.print();
+    }
+
+}
+```
+
+#### 方法重写
+
+- 前提：需要有继承关系，子类重写父类的方法
+- 方法名必须相同
+- 参数列表必须相同
+- 修饰符：范围可以扩大  public>protected>default>priva
+- 抛出异常：范围，可以被缩小，但是不能被扩大   	ClassNotException  -->Exception
+
+为什么需要重写：
+
+- 父类的功能子类不一定需要或者不一定满足
+- Alt +Insert (Overload)
+
+```java
+//父类
+package com.oop.demo05;
+
+//重写都是方法的重写，与属性无关
+public class B {
+
+    public void test(){
+        System.out.println("B=>test()");
+    }
+}
+```
+
+```java
+//子类
+package com.oop.demo05;
+
+public class A  extends  B{
+
+    @Override
+    public void test() {
+        System.out.println("A=>test()");
+    }
+}
+```
+
+```java
+//印证重写
+package com.oop.demo05;
+
+public class Application {
+    //静态方法和非静态的方法区别很大
+        //静态方法：只和左边有关
+        //非静态：才能选择重写
+    public static void main(String[] args) {
+
+        //方法的调用只和左边，定义的数据类型有关
+        A a = new A();
+        a.test();
+
+        //父类的引用指向子类
+        B b = new A();//子类重写了父类的方法，只和非静态有关
+        b.test();
+
+    }
+}
+```
+
+**如果两个类都写成静态`static`，就不能重写。方法的定义只跟左边定义的数据类型有关**  
+
+
 
