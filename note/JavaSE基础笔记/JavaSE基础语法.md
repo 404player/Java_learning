@@ -1171,8 +1171,10 @@ public class Person {
 ### 封装
 
 - 该露的露，改藏的藏  
+  
   - 程序追求"高内聚，低耦合"。高内聚就是类的内部数据操作细节自己完成，不允许外部干涉；低耦合，仅暴露少量的方法给外部使用
 - 封装
+  
   - 通常，应禁止直接访问一个对象中数据的实际表示，而应通过操作接口来访问。这称为信息隐藏。
 - 一句话，属性私有，get/set
 
@@ -1411,5 +1413,167 @@ public class Application {
 
 **如果两个类都写成静态`static`，就不能重写。方法的定义只跟左边定义的数据类型有关**  
 
+## 多态
 
+- 动态编译
+- 即同一方法可以根据发送对象的不同而采用不同的行为方式
+- 一个对象的实际类型是确定的，但可以指向对象的引用的类型有很多
+
+### 多态存在的条件
+
+- 有继承关系
+- 子类重写父类方法
+- 父类引用指向子类对象  
+
+```java
+//父类
+package com.oop.demo06;
+
+public class Person {
+
+    public void run(){
+        System.out.println("run");
+    }
+}
+```
+
+```java
+//子类
+package com.oop.demo06;
+
+public class Student extends Person {
+
+    @Override
+    public void run() {
+        System.out.println("son");
+    }
+
+    public void eat(){
+        System.out.println("eat");
+    }
+}
+```
+
+```java
+//主程序
+package com.oop.demo06;
+
+public class Application {
+
+    public static void main(String[] args) {
+        //一个对象的实际类型是确定的
+        //new Student
+        //new Person
+
+        //可以指向的引用类型就不确定了
+
+        //父类的引用指向子类
+        //Student 能调用的方法都是自己的或者继承父类的
+        //Person 可以指向子类，但是不能调用子类独有的
+        Student s1 = new Student();
+        Person s2 = new Student();
+        Object s3 = new Student();
+
+
+        //对象能执行哪些方法，主要看对象左边的类型，和右边关系不大
+        s1.run();//子类重写了父类的方法，执行子类的方法  son
+        s2.run();//执行子类的方法  son
+        s1.eat();//s2没法调用eat()
+        ((Student)s2).eat();//类型强制转换
+    }
+}
+```
+
+### 多态注意事项
+
+1. 多态是方法的多态，属性没有多态
+2.  有父子类关系才能进行类型转换 
+3. ClassCastException为类型转换异常
+4. 存在条件：继承关系；方法需要重写；父类引用指向子类对象   father f1 = new Son()；
+5.  `static`,`final`，`private`方法不能被重写
+
+### `instanceof` 和类型转换    
+
+### `instanceof`
+
+  ```java
+System.out.println(X instanceof Y); 
+
+//能不能编译通过取决于X的类型与Y的类型是否存在关系
+//Flase还是True取决于X指向的类型与Y的类型是否存在关系
+  ```
+
+```java
+//示例代码
+public class Application {
+    public static void main(String[] args) {
+
+        //Object > String
+        //Object > Person > Teacher
+        //Object > Person > Student
+        Object object = new Student();
+        System.out.println(object instanceof Student);
+        System.out.println(object instanceof Person);
+        System.out.println(object instanceof Teacher);
+        System.out.println(object instanceof  Object);
+        System.out.println(object instanceof String);
+
+        System.out.println("===================================");
+
+        Person person = new Student();
+        System.out.println(person instanceof Student);
+        System.out.println(person instanceof Person);
+        System.out.println(person instanceof  Object);
+        System.out.println(person instanceof Teacher);
+        //System.out.println(person instanceof String);//编译报错！
+        //要两个对象有所联系才能一起比较
+
+        System.out.println("==================================");
+
+        Student student = new Student();
+        System.out.println(student instanceof Student);
+        System.out.println(student instanceof Person);
+        System.out.println(student instanceof  Object);
+        //System.out.println(student instanceof Teacher);
+
+    }
+
+
+}
+```
+
+### 类型转换
+
+在基本类型中，高转低需要强制转换，低转高不需要强制，类比对象的类型转换。  
+
+在对象的类型转换中，父类转子类需要强制转换，子类转父类不需要。  
+
+```java
+//实例：父类转子类
+public class Application {
+    public static void main(String[] args) {
+
+        //基本类型的转化    高---->低   类比    父---->子
+        Person student = new Student();
+
+        //将这个对象转化为Student类型，我们就可以使用Student类型的方法了
+        ((Student)student).eat();
+
+    }
+```
+
+```java
+//实例： 子类转换成父类
+public class Application {
+    public static void main(String[] args) {
+
+        Student student = new Student();
+        student.eat();
+        Person person = student;
+        //person.eat();并不能调用
+        //子类转换为父类，可能会丢失自己本来的一些方法
+        
+
+    }
+```
 
