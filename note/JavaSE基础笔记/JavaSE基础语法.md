@@ -1577,3 +1577,115 @@ public class Application {
     }
 ```
 
+### `static`关键字
+
+- 静态方法，静态对象跟着类一起加载，可在类中直接被调用，非静态要实例化后才存在
+- 可静态导入包，这样不用每次使用方法的时候都写一长串
+- 一个类要是被定义为`final`，就无法被继承
+
+## 抽象类
+
+加了`abstract`关键字的类，就是抽象类  
+
+```java
+//示例代码
+
+package com.oop.demo08;
+
+//abstract 抽象类   类  extends  单继承      （接口可以多继承）
+public abstract class Action {
+
+    //约束~有人帮我们实现~
+    //abstract 抽象方法,只有方法名字，没有方法的实现
+
+    public abstract void doSomething();
+
+    //1. 不能new这个抽象类，只能靠子类去实现它：约束！
+    //2. 抽象类可以写普通方法，抽象方法必须在抽象类中
+    //抽象的抽象
+
+}
+```
+
+- 抽象意思就是等待实现，只有名字，还没有实现
+- 抽象类不能`new`创建，只能通过子类去实现它，相当于一个约束
+- 抽象类可以写普通方法，抽象方法必须在抽象类中
+- 抽象类的方法，继承他的子类，必须有实现它的方法（重写），除非子类也是抽象的
+- 抽象类用于提供一个可拓展性的类，提高开发效率
+
+## 接口
+
+接口就是一种规范，本质是契约，类比法律  
+
+### 接口的作用
+
+1. 约束
+2. 定义一些方法，让不同的人实现
+3. 定义的方法都是`public abstract`
+4. 定义的属性都是`public static final`
+5. 接口不能被实例化，接口中没有构造方法
+6. 可以实现多继承
+7. 要实现接口必须重写里面的方法
+
+```java
+//示例代码
+//接口代码
+package com.oop.demo09;
+
+// 抽象的思维
+// interface 定义的关键字,接口都需要有实现类
+public interface UserService {
+    //接口中所有的定义其实都是抽象的 public abstract
+
+    //public static final  int age = 99;
+
+    void add(String name);
+    void delete(String name);
+    void update(String name);
+    void query(String name);
+}
+```
+
+```java
+//示例代码
+//实现类代码
+package com.oop.demo09;
+
+import java.sql.Time;
+
+//类 可以实现接口 implements  接口
+//实现接口的类，就需要重写接口中的方法
+//多继承
+public class UserServiceImpl implements UserService,TimeService {
+    @Override
+    public void add(String name) {
+
+    }
+
+    @Override
+    public void delete(String name) {
+
+    }
+
+    @Override
+    public void update(String name) {
+
+    }
+
+    @Override
+    public void query(String name) {
+
+    }
+
+    @Override
+    public void timer() {
+
+    }
+}
+```
+
+
+
+## 内部类
+
+内部类就是在一个类的内部再定义一个类。
