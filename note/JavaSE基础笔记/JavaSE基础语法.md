@@ -1688,4 +1688,288 @@ public class UserServiceImpl implements UserService,TimeService {
 
 ## 内部类
 
-内部类就是在一个类的内部再定义一个类。
+内部类就是在一个类的内部再定义一个类。  
+
+```java
+//示例代码
+package com.oop.demo10;
+
+
+public class Outer {
+
+    private int id = 10;
+    public void out(){
+        System.out.println("这是外部类的方法");
+    }
+
+    public class Inner{
+        public void in(){
+            System.out.println("这是内部类的方法");
+        }
+
+
+        //获得外部类的私有属性
+        public  void getID(){
+            System.out.println(id);
+        }
+
+        //要是设置为静态内部类，则无法访问外部类的属性和方法
+    }
+
+    //局部内部类
+
+    public void method(){
+        class Inner{
+            public void in(){
+
+            }
+        }
+    }
+}
+
+//一个java类中可以有多个class类，但是只能有一个public class类
+
+class A{
+
+}
+```
+
+- 非静态的内部类可以调用外部类的方法和属性
+- 方法里也可以定义内部类，称为局部内部类
+- 一个`Java`类中可以有很多个class类，但是只能有一个`public class`类
+
+```java
+//实例代码
+package com.oop.demo10;
+
+public class Test {
+    public static void main(String[] args) {
+        //没有名字初始化类，不用将实例保持到变量中
+
+        new Apple().eat();
+
+        new UserSevice(){
+            @Override
+            public void hello() {
+
+            }
+        };
+    }
+}
+
+class Apple{
+    public  void eat(){
+        System.out.println("1");
+    }
+}
+
+interface UserSevice{
+    void hello();
+}
+```
+
+- 没有名字也能实例化对象，不用将实例保持到变量中
+- 也可以用匿名的方式实现接口
+- 不建议这么写程序，只是介绍一种方法  
+
+## 异常机制
+
+英文名为`Exception`，意思为例外  
+
+异常指程序运行中出现的不期而至的各种状况，如：文件找不到、网络连接失败、非法参数等
+
+异常发生在程序运行期间，它影响了正常的程序执行流程。  
+
+### 异常分类
+
+- 检查性异常：最具代表性的检查性异常是用户错误或问题引起的异常，这是程序员无法预见的。例如要打开一个不存在的文件时，一个异常就发生了。
+- 运行时异常：运行时异常是可能被程序员避免的异常。例如，两个相互调用的函数
+- 错误`ERROR`：错误不是异常，而是脱离程序员控制的问题，如栈溢出
+
+### 异常体系结构
+
+`Java`把对象当作对象来处理，并定义一个基类`java.lang.Throwable`作为所有异常的超类。  
+
+在`Java API`中一定定义了很多异常类，这些异常类分为两大类，错误`Error`和异常`Exception`
+
+#### Error
+
+`Error`类对象由Java虚拟机生成并抛出。大多数错误与代码编写者所执行的操作无关。  
+
+#### Exception
+
+在`Exception`分支中有一个重要的子类`RuntimeException`（运行时异常）
+
+一般由程序逻辑错误引起，是不检查异常，程序中可以选择捕获处理，也可以不处理
+
+### 异常处理机制
+
+- 抛出异常
+- 捕获异常
+- 异常处理五个关键字：`try`、`catch`、`finally`、`throw`、`throws`
+
+```java
+//示例代码
+public static void main(String[] args) {
+
+        int a = 1;
+        int b = 0;
+
+        try{
+            //try监控区域
+            System.out.println(a/b);
+        }catch (ArithmeticException e){//catch 捕获异常
+            System.out.println("程序出现异常，变量b不能为0");
+        }finally {//处理善后工作
+            System.out.println("finally");
+        }
+
+        //finally 可以不要finally，假设IO,资源关闭
+        
+    }
+```
+
+- `try`用于监控异常，相当于一个监控区域，出现在这个区域的异常都能被监控到
+- `catch`用于异常捕获，匹配相应的异常。最大的范围为`throwable`，包括所有的异常和错误
+- `finally`是用于处理善后工作的，比如说IO流错误，可以用于资源的关闭与释放。这个代码块里的代码无论是否进行异常捕获，都会执行
+
+```java
+//示例代码
+package com.exception;
+
+public class Test {
+    public static void main(String[] args) {
+
+        int a = 1;
+        int b = 0;
+
+        try{
+            //try监控区域
+           new Test().a();
+        }catch (Error e){//catch 捕获异常
+            System.out.println("Error");
+        }catch (Exception e){
+            System.out.println("Exception");
+        }catch (Throwable t){
+            System.out.println("Throwable");
+        } finally {//处理善后工作
+            System.out.println("finally");
+        }
+
+        //finally 可以不要finally，假设IO,资源关闭
+
+    }
+
+    public void a(){
+        b();
+    }
+
+    public void b(){
+        a();
+    }
+}
+```
+
+捕获多个异常的时候要遵循从小到大的原则进行捕获，否则程序报错
+
+选中相应语句，按下`Ctrl+Alt+t`，可以自动生成捕获异常语句
+
+```java
+//示例代码
+package com.exception;
+
+import sun.text.resources.th.CollationData_th;
+
+public class Test {
+    public static void main(String[] args) {
+
+        int a = 1;
+        int b = 0;
+        try {
+            new Test().test(a,b);
+        } catch (ArithmeticException e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    //假设这个方法中，处理不了这个异常，方法上抛出异常
+    public void test(int a,int b) throws ArithmeticException{
+        if(b==0){//throw  throws
+            throw new ArithmeticException();//主动抛出异常,一般在方法中使用
+        }
+        System.out.println(a/b);
+    }
+
+}
+```
+
+### 自定义异常
+
+使用Java内置的异常类可以描述在编程时出现的大部分异常情况。除此之外，用户还可以自定义异常。  
+
+用户自定义异常类，只需要继承`Exception`类即可。  
+
+ ```java
+//异常类
+package com.exception.demo02;
+
+//自定义的异常类
+public class MyException extends Exception {
+
+    //传递数字>10
+    private  int detail;
+
+    public MyException(int a) {
+        this.detail = a;
+    }
+
+    //toString:异常的打印信息
+
+
+    @Override
+    public String toString() {
+        return "MyException{" +
+                "detail=" + detail +
+                '}';
+    }
+}
+ ```
+
+```java
+//调用异常类
+package com.exception.demo02;
+
+public class Test {
+
+    //可能会存在异常的方法
+    static  void test(int a) throws MyException{
+
+
+        System.out.println("传递的参数为"+a);
+        if(a>10){
+            throw  new MyException(a);
+        }
+
+        System.out.println("OK");
+
+    }
+
+    public static void main(String[] args) {
+        try {
+            test(11);
+        }catch (MyException e){
+            //增加一些处理异常的代码块
+            System.out.println("MyException=>"+e);
+        }
+    }
+}
+```
+
+- 处理运行时异常时，采用逻辑去合理规避同时辅助`try-catch`处理
+- 在多重`catch`块后面，可以加一个`catch`(`Exception`)来处理可能会被遗漏的异常
+- 对于不确定的代码，也可以加上`try-catch`，处理潜在的异常（`Alt+Enter`可以看到报错提示）
+- 尽量去处理异常，切忌只是简单地调用`printStackTrace()`去打印输出
+- 具体如何处理异常，要根据不同地业务需求和异常类型去决定
+- 尽量添加`finally`语句块去释放占用的资源
