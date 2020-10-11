@@ -1973,3 +1973,210 @@ public class Test {
 - 尽量去处理异常，切忌只是简单地调用`printStackTrace()`去打印输出
 - 具体如何处理异常，要根据不同地业务需求和异常类型去决定
 - 尽量添加`finally`语句块去释放占用的资源
+
+## 集合
+
+`Collection`接口
+
+- 定义的是所有单列集合中共性的方法
+- 所有的单列集合都可以使用的共性的方法
+
+`List`接口
+
+- 有序的集合（存储和取出元素顺序相同）
+- 允许存储重复的元素
+- 有索引，可以使用普通的`for`循环遍历
+
+`Set`接口
+
+- 不允许存储重复元素
+- 没有索引（不能使用普通的for循环）
+
+集合框架的学习方式：
+
+- 学习顶层：学习顶层接口/抽象类中共性的方法，所有的子类都可以使用
+- 使用底层：底层不是接口就是抽象类，无法创建对象使用，需要使用底层的子类创建对象使用
+
+### Collection常用功能
+
+`Collection`是所用单列集合的父接口，定义了一些通用方法。这些方法可以用于操作所有的单列集合。
+
+- `public boolean add(E e)`: 把给定的对象添加到当前集合中
+- `public void clear()`: 清空集合中所有的元素
+- `public boolean remove(E e)`: 把给定的对象在当前集合中删除
+- `public boolean contains(E e)`: 判断当前集合是否为空
+- `public boolean isEmpty():` 判断当前集合是否为空
+- `public int size()`: 返回集合中元素的个数
+- `public Object[] toArray():` 把集合中的元素，存储到数组中
+
+```java
+//示例代码
+package com.collection.total;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class Demo01 {
+    public static void main(String[] args) {
+        //创建集合，可以使用多态
+        Collection<String> coll = new ArrayList<>();
+        System.out.println(coll);//重写了toString方法
+
+
+        /*
+        boolean返回值一般不用接收
+         */
+        boolean b1 = coll.add("张三");
+        System.out.println(b1);
+        System.out.println(coll);
+        coll.add("李四");
+        coll.add("王五");
+        coll.add("赵六");
+        coll.add("田七");
+        System.out.println(coll);
+
+        /*
+        public boolean remove()，集合中存在元素，删除元素，返回true
+        集合中不存在元素，删除失败，返回false
+         */
+        boolean b2 = coll.remove("赵六");
+        System.out.println("b2: "+b2);
+        boolean b3 = coll.remove("赵四");
+        System.out.println("b3: "+b3);
+
+        boolean b4 = coll.contains("李四");
+        System.out.println(b4);
+
+        boolean b5 = coll.isEmpty();
+        System.out.println(b5);//集合不为空返回false
+
+        int size = coll.size();
+        System.out.println("size: "+size);
+
+        //public Object[] toArray
+        //集合元素是多种多样的，变为数组要变成Object[]
+        Object[] arr = coll.toArray();
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+
+        }
+
+        //public void clear():清空集合中所有元素，但是不删除集合，集合还存在
+        coll.clear();
+        System.out.println(coll);
+        System.out.println(coll.isEmpty());
+    }
+}
+```
+
+
+
+### Iterator迭代器
+
+在程序开发中，经常需要遍历集合中的所有元素。`Iterator`主要用于迭代访问`Collection`中的元素，因此`Iterator`对象也被称为迭代器。
+
+- 迭代的概念：`Collection`集合元素的通用获取方式。在取元素之前先要判断集合中有没有元素，如果有，就把这个元素取出来，继续做判断，如果还有就再取出来。一直把集合中的元素全部取出。这种取出方式专业术语称为迭代
+
+- 常用方法
+  - `hasNext()`：如果仍有元素可以迭代，则返回true
+  - `next()`:返回迭代的下一个元素
+  - `remove()`:从迭代器指向的`collection`中移除迭代器返回的最后一个元素
+
+- 使用步骤
+
+  1. 使用集合中的方法iterator()获取迭代器的实现类对象，使用Iterator接口来接收(多态)
+  2. 使用Iterator接口中的方法`hasNext`判断还有没有写一个元素
+  3. 使用Iterator接口中的方法`next`取出集合中的下一个元素
+
+  ```java
+  //示例代码
+  package com.collection.iterator;
+  
+  import java.util.ArrayList;
+  import java.util.Collection;
+  import java.util.concurrent.Phaser;
+  
+  /*
+      java.util.iterator迭代器：遍历集合中的元素
+      Iterator迭代器，是一个接口。我们无法直接使用，需要使用Iterator接口的实现类，获取实现类的方式比较特殊
+      Collection接口中有一个方法，叫iterator()，返回的就是迭代器的实现类对象
+   */
+  public class Iterator {
+      public static void main(String[] args) {
+          //创建一个集合对象
+          Collection<String> coll = new ArrayList<>();
+          //往集合中添加元素
+          coll.add("姚明");
+          coll.add("科比");
+          coll.add("麦迪");
+          coll.add("詹姆斯");
+          coll.add("艾弗森");
+  
+          /*
+          Iterator<E>接口也是有泛型的，迭代器的泛型跟着集合走，集合是什么泛型，迭代器就是什么泛型
+           */
+          java.util.Iterator<String> it = coll.iterator();
+          boolean b = it.hasNext();
+          System.out.println(b);
+          while(it.hasNext()) {
+              String s = it.next();
+              System.out.print(s + "\t");
+          }
+              System.out.println("\n"+"----------------------");
+              for(java.util.Iterator<String> it2 = coll.iterator();it2.hasNext();){
+                  String e = it2.next();
+                  System.out.println(e);
+              }
+          }
+  
+      }
+  ```
+
+- 迭代器的实现
+
+  1. 获取迭代器的实现类对象，并且把指针指向集合的-1索引
+  2. 判断集合中是否有下一个元素
+  3. `it.next()`做了两件事情
+     1. 取出下一个元素
+     2. 会把指针向后移动一位
+
+  
+
+### 泛型
+
+在前面的学习中，我们都知道集合中是可以存放任意对象的。只要把对象存储集合后，那么这时他们都会被提升为`Object`类型。当我们再取出每一个对象，并且进行相应的操作，这时必须采用类型转换。
+
+- 泛型： 可以看作一种未知的数据类型，当我们不知道使用什么数据类型，可以使用泛型
+
+泛型也可以看成是一个变量，用来接收数据类型
+
+- `E e`:Element元素
+- `T t`:Type元素
+
+`ArrayList`集合在定义的时候，不知道集合中都会存储什么类型的数据，所以类型使用泛型
+
+```java
+public class ArrayList<E>{
+    public boolean add(E e){}
+    public E get(int index){}
+}
+```
+
+创建集合对象的时候，就会确定泛型的数据类型
+
+```java
+ArrayList<String> list = new Arrayist<String>();
+```
+
+这个时候`String`就会传递给`E`，会把数据类型当作泛型传递
+
+```java
+public class ArrayList<String>{
+    public boolean add(String e){}
+    public String get(int index){}
+}
+```
+
+> 总结：不确定数据类型的时候可以使用类型，创建对象的时候会赋值数据类型
+
+​                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
