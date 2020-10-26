@@ -2261,50 +2261,264 @@ public class Demo03GenericMethod {
 
 两种使用方式：
 
-- 定义接口的实现类，实现接口 ，指定接口的泛型
+- 定义接口的实现类,实现接口,指定接口的类型
 
-  `Scanner`类实现了`Iterator`接口，并指定接口的泛型为`String`，所以重写的`next`方法泛型默认就是`String`
+`Scanner`类实现了`Iterator`接口，并指定接口的泛型为`String`，所以重写的`next`方法泛型默认就是`String`
 
 - 接口使用什么泛型，实现类就使用什么泛型，类跟着接口走，相当于定义了一个含有泛型的类
 
-  
+```java
+//定义接口
+package com.collection.generic;
 
-  ```java
-  //定义接口
-  package com.collection.generic;
-  
-  public interface GenericInterface<I> {
-      public abstract void method(I i);
-  }
-  ```
+public interface GenericInterface<I> {
+    public abstract void method(I i);
+}
+```
 
-  ```java
-  //第一种方法定义实现类
-  package com.collection.generic;
-  
-  public class GenericInterfaceImpl1 implements GenericInterface<String> {
-      @Override
-      public void method(String s) {
-          System.out.println(s);
-      }
-  }
-  ```
+```java
+//第一种实现方法
+package com.collection.generic;
 
-  ```java
-  //第二种方法定义实现类
-  package com.collection.generic;
-  
-  public class GenericInterfaceImpl2<I> implements GenericInterface<I> {
-      @Override
-      public void method(I i) {
-          System.out.println(i);
-      }
-  }
-  ```
+public class GenericInterfaceImpl1 implements GenericInterface<String> {
+    @Override
+    public void method(String s) {
+        System.out.println(s);
+    }
+}
+```
 
-  #### 泛型通配符
+```java
+//第二种实现方法
+package com.collection.generic;
 
-  
+public class GenericInterfaceImpl2<I> implements GenericInterface<I> {
+    @Override
+    public void method(I i) {
+        System.out.println(i);
+    }
+}
+```
 
-  
+#### 泛型通配符
+
+当使用泛型类或者接口时，传递的数据中，泛型类型不确定，可以通过通配符`<?>`表示。但是一旦使用泛型的通配符后，只能使用`Object`类中的共性方法，集合中元素自身方法无法使用。
+
+##### 通配符基本使用
+
+**不知道使用什么类型来接收的时候，此时可以使用?，?表示未知通配符**
+
+此时只能接受数据，不能往该集合中存储数据。  
+
+```java
+package com.collection.generic;
+/*
+    泛型的通配符：
+        ?:代表任意的数据类型
+    使用方式：
+        不能创建对象使用
+        只能作为方法的参数使用
+ */
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class Demo05Generic {
+    public static void main(String[] args) {
+        ArrayList<Integer> list01 = new ArrayList<>();
+        list01.add(1);
+        list01.add(2);
+
+        ArrayList<String> list02 = new ArrayList<>();
+        list02.add("a");
+
+        printArray(list01);
+        printArray(list02);
+
+    }
+
+    /*
+            定义一个方法，能遍历所有类型的Arraylist集合
+            这时候我们不知道Arraylist集合使用什么数据类型，可以使用泛型的通配符来接受数据
+            注意：
+                泛型没有继承概念的
+         */
+
+    public static void printArray(ArrayList<?> list){
+        //使用迭代器遍历集合
+        Iterator<?> it = list.iterator();
+        //it.next()方法，取出的元素时Object,可以接受任意的数据类型
+        while(it.hasNext()){
+            Object o = it.next();
+            System.out.println(o);
+        }
+    }
+}
+
+```
+
+##### 通配符高级使用
+
+之前设置泛型的时候,实际上时可以任意设置的,只要是类就可以设置,但是在Java的泛型中可以指定一个泛型的上限和下限
+
+泛型的上限:
+
+- 格式: `类型名称 <? extends 类 >  对象名称` 
+- 意义: `只能接收该类型及其子类`
+
+泛型的下限:
+
+- 格式: `类型名称 <? super 类> 对象名称`
+- 意义: `只能接收该类型及其父类型`
+
+```java
+package com.collection.generic;
+ 
+import java.util.ArrayList;
+import java.util.Collection;
+
+/*
+    泛型的上限： ? extends E 代表使用的泛型只能是E类型的子类或者本身
+    泛型的下限： ? super E   代表使用的泛型只能是E类型的父类或者本身
+ */
+public class Demo06Generic {
+    public static void main(String[] args) {
+        Collection<Integer> list1 = new ArrayList<Integer>();
+        Collection<String> list2 = new ArrayList<String>();
+        Collection<Number> list3 = new ArrayList<Number>();
+        Collection<Object> list4 = new ArrayList<Object>();
+
+        getElement1(list1);
+        getElement1(list2);//报错
+        getElement1(list3);
+        getElement1(list4);//报错
+
+        getElement2(list1);//报错
+        getElement2(list2);//报错
+        getElement1(list3);
+        getElement2(list4);
+        
+        /*
+            类与类之间是由继承关系的
+         */
+
+    }
+
+    public static void getElement1(Collection<? extends Number> coll){}
+    public static void getElement2(Collection<? super Number> coll){}
+}
+
+```
+
+### 案例介绍
+
+斗地主综合案例:
+
+一: 准备牌 
+
+1. 准备牌: 54张牌存储到一个集合中
+2. 特殊牌: 大小王
+3. 其他52张牌: 定义一个数组/集合: 存储4种花色。定义一个数组/集合: 存储13个序号
+4. 循环嵌套遍历两个数组/集合 , 组装52张牌
+
+二: 洗牌
+
+1. 使用集合工具类Collections的方法
+2. `static void shuffle(List<?> list)`使用指定的随机数对指定列表进行替换
+
+三: 发牌
+
+1. 一人17张牌,剩余3张作为底牌 . 一人一张轮流发牌 %3
+2. 定义4个集合 ,存储三个玩家的牌和底牌
+
+四. 看牌
+
+1. 直接打印集合,遍历存储玩家和底牌的集合
+
+五: 代码实现
+
+```java
+package com.collection.test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+/*
+       斗地主综合案例：
+       1.准备牌
+       2.洗牌
+       3.发牌
+       4.看牌
+    */
+public class DouDiZhu {
+    public static void main(String[] args) {
+        //1.准备牌
+        //定义一个存储54张牌的ArrayList集合，泛型使用String
+        ArrayList<String> poker = new ArrayList<>();
+
+        //定义两个数组，一个数组存储牌的花色，一个数组存储牌的序号
+        String[] colors = {"♠","♥","♣","♦"};
+        String[] numbers = {"2","A","K","Q","J","10","9","8","7","6","5","4","3"};
+
+        //先把大王和小王存储到poker集合中
+        poker.add("大王");
+        poker.add("小王");
+
+        //循环嵌套两个数组，组装52张牌
+        for(String number:numbers){
+            for (String color : colors) {
+                //把组装好的牌存到poker集合中
+                poker.add(color+number);
+            }
+        }
+        // System.out.println(poker);
+
+        /*
+            2.洗牌
+            使用集合的工具类Collections中的方法
+            static void shuffle(list<?> list)
+         */
+        Collections.shuffle(poker);
+
+        /*
+            3.发牌
+         */
+        //定义四个集合，存储玩家的牌和底牌
+        ArrayList<String> player01 = new ArrayList<>();
+        ArrayList<String> player02 = new ArrayList<>();
+        ArrayList<String> player03 = new ArrayList<>();
+        ArrayList<String> diPai = new ArrayList<>();
+
+        /*
+        遍历poker集合，获取每一张牌
+        使用poker集合的索引%3给3个玩家轮流发牌
+        剩余3张牌给底牌
+         */
+        for(int i = 0 ; i < poker.size() ; i++ ){
+            //获取每一张牌
+            String p = poker.get(i);
+            if(i>=51){
+                diPai.add(p);
+            }else if (i%3==0){
+                player01.add(p);
+            }else if(i%3==1){
+                player02.add(p);
+            }else{
+                player03.add(p);
+            }
+        }
+
+        //4.牌
+        System.out.println("刘德华"+player01);
+        System.out.println("周润发"+player02);
+        System.out.println("周星驰"+player03);
+        System.out.println("底牌"+diPai);
+    }
+
+}
+
+```
+
+
 
