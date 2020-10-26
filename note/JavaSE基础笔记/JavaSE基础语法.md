@@ -2180,3 +2180,131 @@ public class ArrayList<String>{
 > 总结：不确定数据类型的时候可以使用类型，创建对象的时候会赋值数据类型
 
 ​                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+
+#### 定义含有泛型的类
+
+定义一个含有泛型的类，模拟`ArrayList`集合
+
+创建对象的时候确定泛型的数据类型
+
+```java
+//实例代码
+package com.collection.generic;
+
+public class GenericClass<E> {
+
+    private E name;
+
+    public E getName() {
+        return name;
+    }
+
+    public void setName(E name) {
+        this.name = name;
+    }
+}
+```
+
+#### 定义和使用含有泛型的方法
+
+定义含有泛型的方法： 泛型定义在方法的修饰符和返回值类型之间
+
+```
+修饰符 <泛型> 返回值类型 方法名 (参数列表<使用泛型>){
+	方法体
+}
+```
+
+含有泛型的方法，在调用方法的时候确定泛型的数据类型
+
+```java
+//定义方法
+package com.collection.generic;
+
+public class GenericMethod {
+
+
+    public <M> void method01(M m){
+        System.out.println(m);
+    }
+
+    public static <S> void method02(S s){
+        System.out.println(s);
+    }
+}
+```
+
+```java
+//调用方法
+package com.collection.generic;
+
+import sun.net.www.content.text.Generic;
+
+/*
+    测试含有泛型的方法
+ */
+public class Demo03GenericMethod {
+    public static void main(String[] args) {
+        GenericMethod gm = new GenericMethod();
+        //调用含有泛型的方法
+        gm.method01(10);
+        gm.method01("abc");
+        gm.method01(8.8);
+        gm.method02("静态方法，不建议创建对象使用");
+
+        GenericMethod.method02(123);
+    }
+}
+```
+
+#### 定义和使用含有泛型的接口
+
+两种使用方式：
+
+- 定义接口的实现类，实现接口 ，指定接口的泛型
+
+  `Scanner`类实现了`Iterator`接口，并指定接口的泛型为`String`，所以重写的`next`方法泛型默认就是`String`
+
+- 接口使用什么泛型，实现类就使用什么泛型，类跟着接口走，相当于定义了一个含有泛型的类
+
+  
+
+  ```java
+  //定义接口
+  package com.collection.generic;
+  
+  public interface GenericInterface<I> {
+      public abstract void method(I i);
+  }
+  ```
+
+  ```java
+  //第一种方法定义实现类
+  package com.collection.generic;
+  
+  public class GenericInterfaceImpl1 implements GenericInterface<String> {
+      @Override
+      public void method(String s) {
+          System.out.println(s);
+      }
+  }
+  ```
+
+  ```java
+  //第二种方法定义实现类
+  package com.collection.generic;
+  
+  public class GenericInterfaceImpl2<I> implements GenericInterface<I> {
+      @Override
+      public void method(I i) {
+          System.out.println(i);
+      }
+  }
+  ```
+
+  #### 泛型通配符
+
+  
+
+  
+
