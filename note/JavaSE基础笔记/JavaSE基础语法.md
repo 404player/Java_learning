@@ -2555,7 +2555,737 @@ public class DouDiZhu {
   - 每个红色的子节点都是黑色的
   - 任何一个节点到其每一个叶子节点的所有路径上黑色节点数相同
 
+## List集合
+
+`java.util.list`接口继承了`Collection`接口
+
+`List`接口的特点：
+
+- 有序的集合，存储元素和取出元素的顺序是一致的
+- 有索引，包含了一些带索引的方法
+- 允许存储重复的元素
+
+### LIst特有的方法
+
+- `public void add(int index, E element)` 将指定的元素，添加到该集合中的指定位置
+- `public E get(int index)`  返回集合中指定位置的元素
+- `public E remove(int index)` 移除列表中指定位置的元素，返回的是被移除的元素
+- `public E set(int index, E element)` 用指定元素替换集合中指定位置的元素，返回值是更新前的元素
+
+```java
+//实例代码
+//简单介绍特有方法
+//介绍三种遍历List的方法
+
+
+package com.collection.list;
+
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+
+//操作索引的时候一定要注意索引越界异常
+//IndexOutOfBoundsException 索引越界异常
+//ArrayIndexOutBoundsException 数组索引越界异常
+
+public class Demo01List {
+    public static void main(String[] args) {
+        //创建一个List集合对象，多态
+        List<String> list = new ArrayList<>();
+        //使用add方法往集合中添加元素
+        list.add("a");
+        list.add("b");
+        list.add("c");
+        list.add("a");
+        //打印集合
+        System.out.println(list);//打印[a, b, c, a] 说明重写了toString方法
+
+        //public void add
+        list.add(3,"ithema");
+        System.out.println(list);
+
+        //public void remove
+        String removeE= list.remove(2);
+        System.out.println("被移除的元素"+removeE);
+        System.out.println(list);
+
+        //public void set
+        String setE = list.set(3,"A");
+        System.out.println("被替换的元素"+setE);
+        System.out.println(list);
+
+        //list集合遍历有三种方式
+        //使用普通的for循环
+        for (int i = 0; i < list.size(); i++) {
+            //public E get(int index)
+            String s =  list.get(i);
+            System.out.println(s);
+
+        }
+
+        System.out.println("-------------------------");
+        //使用迭代器来遍历
+        Iterator<String> it = list.iterator();
+        while(it.hasNext()){
+            String s = it.next();
+            System.out.println(s);
+        }
+
+
+        System.out.println("-------------------");
+        //使用增强for循环
+        for(String s : list){
+            System.out.println(s);
+        }
+
+    }
+}
+
+```
+
+### List的子类
+
+#### ArrayList集合
+
+`java.util.ArrayList`集合数据存储的结构是数组结构。元素增删慢，查找快，由于日常开发中使用最多的功能为查询数据、遍历数据，所以`ArrayList`是最常用的集合。  
+
+底层`add`方法是建立一个新数组`size`加一。再把原数组复制过去，所以不要随便滥用`ArrayList`。
+
+#### LinkedLIst集合
+
+`java.util.LinkedList`集合数据存储的结构是链表结构。方便元素添加、删除的集合。
+
+> LinkedList是一个双向链表
+
+`LinkedList`中找到头和尾非常方便，里面有大量的操作首尾元素的方法
+
+`LinkedList`提供了大量首尾操作的方法
+
+```java
+
+
+package com.collection.list;
+/*
+    java.util.LinkedList集合： implements List接口
+ */
+
+
+import sun.awt.image.ImageWatched;
+
+import java.util.LinkedList;
+
+public class Demo02LinkedList {
+    public static void main(String[] args) {
+        //show01();
+        //show02();
+        show03();
+    }
 
 
 
+    private static void show02(){
+        //创建LinkedList集合对象
+        LinkedList<String> linked = new LinkedList<>();
+        linked.add("a");
+        linked.add("b");
+        linked.add("c");
+
+        linked.clear();//清空集合中的元素，在获取集合中的元素时会抛出NoSuchElementException异常
+
+        if(!linked.isEmpty()){
+            String first = linked.getFirst();
+            System.out.println(first);//a
+            String last = linked.getLast();
+            System.out.println(last);//c
+        }
+
+    }
+
+    private static void show01(){
+        //创建LinkedList集合对象
+        LinkedList<String> linked = new LinkedList<>();
+        //使用add方法往集合中添加元素
+        linked.add("a");
+        linked.add("b");
+        linked.add("c");
+        System.out.println(linked);
+
+        //public void addFirst(E e)
+        linked.addFirst("www");
+        System.out.println(linked);
+
+        //public void push
+        linked.push("w3c");
+        System.out.println(linked);
+
+        //public void addLast(E e) === public void add(E e)
+        linked.addLast("html");
+        System.out.println(linked);
+    }
+
+    private static void show03(){
+        LinkedList<String> linked = new LinkedList<>();
+        linked.add("a");
+        linked.add("b");
+        linked.add("c");
+        System.out.println(linked);
+
+
+        String first =  linked.removeFirst();
+        //linked.pop()一样的效果
+        System.out.println(first);
+        String last =   linked.removeLast();
+        System.out.println(last);
+
+        System.out.println(linked);
+
+
+
+    }
+}
+```
+
+#### Vector集合
+
+`Vector`类实现可增长的对象数组，是早期`JDK 1.0`的集合类，所以是单线程的。
+
+而且没法调用迭代器方法。
+
+## Set接口
+
+一个不包含重复元素的`collection`。
+
+### 特点
+
+- 不允许存储重复的元素
+- 没有索引，没有带索引的方法，也不能使用普通的`for`循环遍历
+
+### HashSet
+
+特点： 
+
+1. 是一个无序的集合，存储元素和取出元素的顺序有可能不一致
+2. 底层是一个哈希表结构，查询的速度非常快。
+
+```java
+//实例代码
+package com.collection.set;
+
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
+public class Demo01Set {
+    public static void main(String[] args) {
+        Set<Integer> set = new HashSet<>();
+        //使用add方法往集合中添加元素
+        set.add(1);
+        set.add(3);
+        set.add(2);
+        set.add(1);
+        //使用迭代器遍历Set集合
+        Iterator<Integer> it = set.iterator();
+        while(it.hasNext()){
+            Integer next = it.next();
+            System.out.println(next);
+        }//输出1 2 3 没按顺序来
+
+        //使用增强for遍历set集合
+        System.out.println("------------------------");
+        for(Integer i : set){
+            System.out.println(i);
+        }
+
+    }
+}
+```
+
+#### 哈希值（HashCode)
+
+哈希值： 是一个十进制的整数， 由系统随机给出（就是对象的地址值，是一个逻辑值，是模拟出来的地址，不是数据实际存储的物理地址）
+
+在`Object`类中有一个方法可以获取对象的哈希值.
+
+`int hashCode()`返回该对象的哈希码值。
+
+`hashCode`方法的源码：
+
+`public native int hashCode();`
+
+`native`： 代表该方法调用的是本地操作系统的方法
+
+```java
+//重写一个方法
+package com.collection.hashCode;
+
+public class Person {
+
+    //重写hashCode方法
+
+    @Override
+    public int hashCode() {
+        return 1;
+    }
+}
+```
+
+```java
+package com.collection.hashCode;
+
+import java.util.Set;
+
+public class Demo01HashCode {
+
+    public static void main(String[] args) {
+        //Person类继承了Object类，所以可以使用Object类的hashCode方法
+        Person p1 = new Person();
+        int h1 = p1.hashCode();
+        System.out.println(h1);//460141958
+
+        Person p2 = new Person();
+        int h2 = p2.hashCode();
+        System.out.println(h2);//1163157884
+
+        /*
+        toString方法:
+          return getClass().getName()+"@"+Integer.toHexString(hashCode());
+        */
+
+        System.out.println(p1);//com.collection.hashCode.Person@1b6d3586
+        System.out.println(p2);//com.collection.hashCode.Person@4554617c
+
+        System.out.println(p1==p2);//flase  重写方法以后，也是flase
+
+        /*
+            String类的哈希值
+                String类重写Object类的hashCode方法
+
+         */
+
+        String s1 = new String("abc");
+        String s2 = new String ("abc");
+        System.out.println(s1.hashCode());//96354
+        System.out.println(s2.hashCode());//96354
+
+        System.out.println(s1.hashCode()==s2.hashCode());//true
+
+        System.out.println("重地".hashCode());
+        System.out.println("通话".hashCode());//刚好相等
+
+    }
+}
+
+```
+
+#### HashSet集合存储数据的结构（哈希表）
+
+`jdk1.8`版本之前： 哈希表=数组+链表
+
+`jdk1.8`版本之后： 哈希表=数组+链表
+
+​								  哈希表= 数组+红黑树（提高查询速度）
+
+**哈希表的特点： 速度快**
+
+数据结构： 把元素进行了分组，（相同哈希值的元素是一组） 链表/红黑树结构把相同哈希值的元素连在一起
+
+如果链表的长度超过八位，那么就会把链表转换为红黑树（提高查询速度）
+
+
+
+#### Set集合存储元素不重复的原理
+
+`Set`集合在调用`add`方法的时候，`add`方法调用元素的`hashCode`和`equals`方法，判断元素是否重复
+
+调用`hashCode`看看有没有哈希值的元素，没有加入数组，有的话即为哈希冲突，调用`equals`函数看看两个值相不相同，不同的话就存储。
+
+```java
+package com.collection.set;
+
+import java.util.HashSet;
+/*
+    Set不允许存储重复元素
+
+ */
+public class Demo02HashSetSaveString {
+
+    public static void main(String[] args) {
+        //创建一个HashSet集合
+        HashSet<String> set = new HashSet<>();
+        String s1 = new String("abc");
+        String s2 = new String("abc");
+        set.add(s1);
+        set.add(s2);
+        set.add("重地");
+        set.add("通话");
+        set.add("abc");
+        System.out.println(set);
+
+    }
+}
+```
+
+
+
+#### HashSet存储自定义类型元素
+
+必须要重写`hashSet`和`equals`方法，否则`equals`默认地比较地址值，而`hashCode`返回的是对象本身的哈希值。
+
+```java
+//定义类，重写方法
+package com.collection.set;
+
+import java.util.Objects;
+
+public class Person {
+    private String name;
+    private int age;
+
+    public Person() {
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return age == person.age &&
+                Objects.equals(name, person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+```
+
+```java
+//示例代码
+package com.collection.set;
+
+import java.util.HashSet;
+
+/*
+    HashSet存储自定义类型元素
+
+    set集合保证元素唯一：
+        存储的元素(String,Integer,....Student,Person...),必须重写hashCode和equal方法
+
+    要求：
+        同名同年龄的人，视为同一个人，只能存储一次
+ */
+public class Demo03HashSetSavePerson {
+    public static void main(String[] args) {
+        //创建HashSet集合存储Person
+        HashSet<Person> set = new HashSet<>();
+        Person p1 = new Person("小美女",18);
+        Person p2 = new Person("小美女",18);
+        Person p3 = new Person("小美女",19);
+        System.out.println(p1.hashCode());
+        System.out.println(p2.hashCode());
+
+        System.out.println(p1==p2);//flase
+        System.out.println(p1.equals(p2));//flase 没有重写比较的是两个对象的地址值
+        set.add(p1);
+        set.add(p2);
+        set.add(p3);
+        System.out.println(set);
+    }
+
+}
+```
+
+#### LinkedHashSet集合
+
+`java.util.LinkedHashSet`集合继承了`HashSet`集合
+
+`LinkedHashSet`集合特点：
+
+1.  底层是一个哈希表+链表（记录元素的存储数据），保证元素有序
+
+```java
+package com.collection.set;
+
+
+import java.util.HashSet;
+
+import java.util.LinkedHashSet;
+
+public class Demo04LinkedHashSet {
+    public static void main(String[] args) {
+        HashSet<String> set = new HashSet<>();
+        set.add("www");
+        set.add("abc");
+        set.add("abc");
+        set.add("itcast");
+        System.out.println(set);//[abc, www, itcast] 无序，不允许重复
+
+        LinkedHashSet<String> linked = new LinkedHashSet<>();
+        linked.add("www");
+        linked.add("abc");
+        linked.add("abc");
+        linked.add("itcast");
+        System.out.println(linked);//有序的集合
+    }
+}
+```
+
+## Collections集合工具类的方法
+
+- `java.utils.Collections`是集合工具类，用来对集合进行操作
+- `public static <T> boolean addALL(Collection<T> c,T...elements)`:往集合里面添加一些元素
+- `public static void shuffle(List<?> list) `： 打乱集合顺序
+- `public static <T> void sort(List<T> list)`：将集合中元素按照默认规则排序
+- `public static <T> void sort(List<T> list,Comparator<? super T> )`:将集合中元素按照指定规则排序
+
+```java
+//Collections.addALL
+package com.collection.collections;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+public class Demo01Collections {
+    public static void main(String[] args) {
+        ArrayList<String> list = new ArrayList<>();
+        //public static<T> boolean addALL<Collection<T> c,T....elements)
+        Collections.addAll(list,"a","b","c","d");
+        System.out.println(list);
+
+        Collections.shuffle(list);
+        System.out.println(list);
+    }
+
+}
+```
+
+```java
+//person实现可比较
+package com.collection.collections;
+
+public class Person implements Comparable<Person>{
+    private String name;
+    private  int age;
+
+
+    public Person() {
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    //重写排序的规则
+    @Override
+    public int compareTo(Person o) {
+        //return 0;//认为元素都是相同的
+        //自定义比较的规则，比较两个人的年龄(this,参数Person)
+        return this.getAge()-o.getAge();//按照年龄升序排序
+
+    }
+}
+```
+
+```java
+package com.collection.collections;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+
+//使用前提：被排序的集合里存储的元素，必须实现Comparable,重写接口中的方法compareTo定义排序的规则
+
+//Comparable接口的排序规则：
+//this-参数： 升序
+//参数-this: 降序
+public class Demo02Sort {
+    public static void main(String[] args) {
+        ArrayList<Integer> list01 = new ArrayList<>();
+        list01.add(1);
+        list01.add(3);
+        list01.add(2);
+        System.out.println(list01);//[1, 3, 2]
+
+        Collections.sort(list01);//默认是升序
+        System.out.println(list01);//[1, 2, 3]
+
+        ArrayList<String> list02 = new ArrayList<>();
+        list02.add("A");
+        list02.add("D");
+        list02.add("C");
+        System.out.println(list02);
+
+        Collections.sort(list02);
+        System.out.println(list02);
+
+
+        ArrayList<Person> list03 = new ArrayList<>();
+        list03.add(new Person("张三",18));
+        list03.add(new Person("李四",20));
+        list03.add(new Person("王五",15));
+        System.out.println(list03);
+
+        Collections.sort(list03);
+        System.out.println(list03);
+
+    }
+}
+```
+
+```java
+//定义一个学生类
+package com.collection.collections;
+
+
+public class Student {
+    private String name;
+    private int age;
+
+    public Student() {
+    }
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+
+```
+
+```java
+//在sort方法的参数传递中实现Comparator
+
+package com.collection.collections;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+/*
+
+    Comparator和Comparable的区别
+    Comparable:自己要和别人比较，自己需要实现Comparable接口，重写比较的规则compareto方法
+    Comparator:相当于找一个第三方的裁判来比较两个人
+
+ */
+public class Demo03Sort {
+    public static void main(String[] args) {
+        ArrayList<Integer> list01 = new ArrayList<>();
+        list01.add(1);
+        list01.add(3);
+        list01.add(2);
+        System.out.println(list01);
+
+        Collections.sort(list01, new Comparator<Integer>() {
+            //重写比较的规则
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o1-o2;//升序
+                //return o2-o1
+            }
+        });
+        System.out.println(list01);
+
+        ArrayList<Student> list02 = new ArrayList<>();
+        list02.add(new Student("a",18));
+        list02.add(new Student("b",20));
+        list02.add(new Student("c",17));
+        list02.add(new Student("d",18));
+        System.out.println(list02);
+
+        Collections.sort(list02, new Comparator<Student>() {
+            @Override
+            public int compare(Student o1, Student o2) {
+                int result =  o1.getAge()-o2.getAge();
+                //如果两个人年龄相同。在使用姓名的第一个字比较
+                if(result==0){
+                    result = o1.getName().charAt(0)-o2.getName().charAt(0);
+                }
+                return result;
+            }
+        });
+        System.out.println(list02);
+    }
+}
+
+```
 
