@@ -3289,3 +3289,216 @@ public class Demo03Sort {
 
 ```
 
+
+
+## Map集合
+
+将键映射到值的对象。一个映射不能包含重复的键，每个键最多只能映射到一个值。
+
+- `map`中的集合，元素是成对存在的。每个元素由键和值两部分组成，通过键可以找键所对应的值
+- `collection`中的集合称为单列集合，`Map`中的集合称为双列集合
+
+### 实现类
+
+- `java.util.HashMap<k,v>集合`
+
+1. `HashMap`集合底层是哈希表，查询的速度特别的快
+   1. JDK1.8之前： 数组+单向链表
+   2. JDK1.8之后： 数组+单向链表/红黑树
+2. `HashMap`集合是一个无序的集合，存储元素和取出元素的顺序有可能不一致
+
+
+
+- `LinkedHashMap`的特点
+
+1. 底层是哈希表+链表
+2. 是一个有序的集合，存储元素和取出元素的顺序是一致的
+
+### Map接口中常用的方法
+
+- `public V input(K key, V value)`:把指定的键与指定的值加入Map集合中
+- `public V remote(Object key)`:把指定的键所对应的键值对元素在Map集合中删除，返回被删除元素的值
+- `public V get(Object key)`:根据指定的键，在Map集合中获取对应的值
+- `boolean containsKey(Object key)`:判断集合中是否包含指定的键
+- `public Set<K> keySet()`:获取Map集合中所有的键，存储到Set集合中
+- `public Set<Map.Entry<K,V>> entrySet()`:获取到Map集合中所有的键值对对象的集合（Set集合）
+
+```java
+//示例代码
+package com.collection.map;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/*
+    java.util.Map<k,v>
+ */
+public class Demo01Map {
+    public static void main(String[] args) {
+        show03();
+    }
+
+    /*
+        public V put(K key, V value)
+        返回值V：
+            存储键值对的时候，key不重复，返回值V为null
+            存储键值对的时候，key重复，会使用新的value替换map的value，返回被替换的value值
+     */
+
+
+    private  static void show01(){
+        //创建Map集合对象，多态
+        Map<String,String> map = new HashMap<>();
+        String v1 = map.put("lichen","fanbingbing");
+        System.out.println("v1:"+v1);
+
+        String v2 = map.put("lichen","fanbingbing");
+        System.out.println("v2:"+v2);
+
+        System.out.println(map);
+
+        map.put("lengfeng","longxiaoyun");
+        map.put("yangguo","xiaolongnv");
+        System.out.println(map);
+
+    }
+
+    /*
+        public V put(Object key)
+     */
+
+
+    private static void show02(){
+        Map<String,Integer> map = new HashMap<>();
+        map.put("赵丽颖",168);
+        map.put("杨颖",165);
+        map.put("林志玲",160);
+        System.out.println(map);
+
+        Integer v1 =  map.remove("赵丽颖");
+        //int v1  可以用int类型接收，但是要是键不存在，null无法赋值给int
+        System.out.println("v1: "+v1);
+        System.out.println(map);
+
+        System.out.println(map.get("杨颖"));
+        System.out.println(map.get("迪丽热巴"));
+
+
+
+    }
+
+    /*
+        public V get(Object Key)
+
+     */
+
+    private static void show03(){
+
+        Map<String,Integer> map = new HashMap<>();
+        map.put("赵丽颖",168);
+        map.put("杨颖",165);
+        map.put("林志玲",160);
+        System.out.println(map);
+
+        boolean b1 = map.containsKey("赵丽颖");
+        boolean b2 = map.containsKey("好东西");
+        System.out.println("b2： "+b2);
+        System.out.println("b1： "+b1);
+
+
+    }
+}
+```
+
+```java
+//遍历HashSet
+package com.collection.map;
+/*
+    Map集合第一种遍历方式：通过键找值的方式
+    实现步骤：
+        1. 使用Map集合中的方法keySet()，把Map集合所有的key取出来，存储到一个Set中
+        2. 遍历set集合，获取Map集合中的每一个键
+        3.通过Map集合中的方法get(key)，获取集合中的每一个value
+ */
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+public class Demo02KeySet {
+    public static void main(String[] args) {
+        Map<String,Integer> map = new HashMap<>();
+        map.put("赵丽颖",168);
+        map.put("杨颖",165);
+        map.put("林志玲",160);
+        System.out.println(map);
+
+        Set<String> set = map.keySet();
+        //使用迭代器遍历set集合
+        Iterator<String> it = set.iterator();
+        while(it.hasNext()){
+            String key = it.next();
+            Integer value = map.get(key);
+            System.out.println(key+":"+value);
+        }
+
+    }
+}
+```
+
+`Map.Entry<K,V>`：在`Map`接口中有一个内部接口`Entry`
+
+作用： 当`Map`集合一创建，那么就会在`Map`集合中创建一个`Entry`对象，用来记录键与值（键值对对象，键与值的对象）
+
+`Entry`对象中的方法： `getKey()`、`getValue()`
+
+```java
+//遍历HashSet第二种方法
+package com.collection.map;
+/*
+    Map集合遍历的第二种方法:使用Entry对象遍历
+   实现步骤：
+   1. 使用entrySet()把Map集合中多个Entry对象取出来，存储到一个Set集合中
+   2. 遍历Set集合，获取每一个Entry对象
+   3. 使用Entry对象中的方法getKey()和getValue()获取键与值
+ */
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+public class Demo03EntrySet {
+    public static void main(String[] args) {
+        Map<String,Integer> map = new HashMap<>();
+        map.put("赵丽颖",168);
+        map.put("杨颖",165);
+        map.put("林志玲",160);
+        System.out.println(map);
+
+        Set<Map.Entry<String,Integer>> set = map.entrySet();
+        //使用迭代器遍历Set
+        Iterator<Map.Entry<String,Integer>> it = set.iterator();
+        while(it.hasNext()){
+            Map.Entry<String,Integer> entry = it.next();
+            String key  = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println(key+":"+value);
+
+        }
+
+        System.out.println("------------------------------------------");
+
+        for(Map.Entry<String,Integer> entry:set){
+            String key =   entry.getKey();
+            Integer value = entry.getValue();
+            System.out.println(key+":"+value);
+        }
+    }
+}
+
+```
+
+
+
