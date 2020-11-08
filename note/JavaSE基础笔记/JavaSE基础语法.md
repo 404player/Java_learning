@@ -3500,5 +3500,172 @@ public class Demo03EntrySet {
 
 ```
 
+### HashMap存储自定义类型
+
+若自定义元素存储在`key`中，必须重写`hashCode`和`equals`方法保证唯一  
+
+  ```java
+//定义Person类
+package com.collection.map;
+
+import java.util.Objects;
+
+public class Person {
+    private String name;
+    private int age;
+
+    public Person() {
+    }
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return age == person.age &&
+                Objects.equals(name, person.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+
+  ```
+
+```java
+package com.collection.map;
+
+import com.sun.corba.se.impl.resolver.SplitLocalResolverImpl;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+/*
+    HashMap存储自定义类型键值
+    Map集合保证key是唯一的
+        作为key的元素，必须重写hashCode方法和equals方法保证key唯一
+ */
+public class Demo04HashMapSavePerson {
+    public static void main(String[] args) {
+        show2();
+    }
+    /*
+        HashMap存储自定义类型键值
+        key:String类型
+            String类型重写了HashCode方法和equals方法，可以保证key唯一
+        value:Person类型
+            value可以重复（同名同年龄）
+     */
+    private  static void show01(){
+        HashMap<String,Person> map = new HashMap<>();
+        //往集合中添加元素
+        map.put("北京",new Person("张三",18));
+        map.put("上海",new Person("李四",19));
+        map.put("广州",new Person("王五",20));
+        map.put("北京",new Person("赵六",18));
+
+        //使用keySet加上增强for遍历Map集合
+        Set<String> set = map.keySet();
+        for(String key:set){
+            Person value = map.get(key);
+            System.out.println(key+":"+value);
+        }
+
+    }
+    /*
+        HashMap存储自定义类型键值
+        Map集合保证key是唯一的：
+            作为key的元素，必须重写hashCode方法和equals方法，以保证key唯一
+     */
+    private static void show2(){
+        HashMap<Person,String> map = new HashMap<>();
+        //往集合中添加元素
+        map.put(new Person("女王",18),"英国");
+        map.put(new Person("秦始皇",18),"秦国");
+        map.put(new Person("普京",30),"俄罗斯");
+        map.put(new Person("女王",18),"毛里求斯");
+        //使用entrySet和增强for
+        Set<Map.Entry<Person,String>> set = map.entrySet();
+        for (Map.Entry<Person,String> entry: set){
+            Person key = entry.getKey();
+            String value = entry.getValue();
+            System.out.println(key+":"+value);
+
+        }
+    }
+}
+
+```
+
+### LinkedHashMap集合
+
+继承了`HashMap`集合，底层原理是哈希表加上链表，是一个有序的集合。  
+
+### Hashtable集合
+
+1. 底层也是哈希表，但是键和值都不能够是`null`
+2. 是最早期的双列集合
+3. 是同步的，是单线程的，意味着速度比较慢
+
+```java
+package com.collection.map;
+
+import java.util.HashMap;
+import java.util.Hashtable;
+
+/*
+    Hashtable和Vector集合一样，在jdk1.2版本之后被更先进的集合（HashMap,ArrayList)取代了
+    Hashtable的子类Properties依然活跃在历史舞台
+    Properties集合是唯一一个和IO流相结合的集合
+ */
+public class Demo06Hashtable {
+    public static void main(String[] args) {
+        HashMap<String,String> map = new HashMap<>();
+        map.put(null,"a");
+        map.put("b",null);
+        map.put(null,null);
+        System.out.println(map);//可以存储null
+
+        Hashtable<String,String > table = new Hashtable<>();
+        table.put(null,"a");
+        System.out.println(table);//NullPointerException异常
+
+    }
+}
+
+```
+
 
 
