@@ -3669,3 +3669,60 @@ public class Demo06Hashtable {
 
 
 
+### Map集合练习
+
+**需求：**
+
+计算一个字符串中每个字符出现次数
+
+**分析：**
+
+1. 获取一个字符串对象
+2. 创建一个Map集合，键代表字符，值代表次数
+3. 遍历字符串得到每个字符
+4. 判断Map中是否有该键  
+5. 如果没有，第一次出现，存储次数为1；如果有，则说明已经出现过，获取到对应的值进行++，再次存储  
+6. 打印最终结果  
+  
+  
+**遍历字符串的方法:**  
+1. `String`类方法`toCharArray`，把字符串转换为一个字符数组，遍历数组  
+2. `String`类的方法`length()+charAt(索引)`    
+  
+
+```java
+package com.collection.map;
+
+import java.util.HashMap;
+import java.util.Scanner;
+
+public class Demo04MapTest {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请输入一个字符串:");
+        String str = scanner.next();
+        HashMap<Character,Integer> map = new HashMap<>();
+        for(char c :str.toCharArray()){
+            if(map.containsKey(c)){
+                Integer value =  map.get(c);
+                value++;
+                map.put(c,value);
+            }else{
+                map.put(c,1);
+            }
+        }
+
+        for(Character key : map.keySet()){
+            Integer value =  map.get(key);
+            System.out.println(key+":"+value);
+        }
+
+    }
+}
+
+```  
+  
+### 斗地主综合案例(有序版本)  
+  
+
+  
