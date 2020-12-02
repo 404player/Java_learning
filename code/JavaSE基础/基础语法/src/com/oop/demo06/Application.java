@@ -1,7 +1,5 @@
 package com.oop.demo06;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
-import sun.util.resources.cldr.en.TimeZoneNames_en_ZA;
 
 public class Application {
     public static void main(String[] args) {

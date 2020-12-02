@@ -1,6 +1,5 @@
 package com.kuang.struct;
 
-import javafx.scene.SceneAntialiasing;
 
 import java.util.Scanner;
 

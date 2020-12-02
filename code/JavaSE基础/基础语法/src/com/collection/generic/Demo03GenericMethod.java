@@ -1,7 +1,5 @@
 package com.collection.generic;
 
-import sun.net.www.content.text.Generic;
-
 /*
     测试含有泛型的方法
  */
